@@ -119,7 +119,15 @@ start_message.write("Press Enter to Start", align="center",
                     font=("Courier", 48, "bold"))
 
 
-wn.onkeypress(wn.bye, "0")
+def game_start():
+    global started, bounces, start_message
+    bounces = 0
+    start_message.clear()
+    started = True
+
+
+wn.onkeypress(game_start, "Return")
+wn.onkeypress(wn.bye, "0")  # quit.
 
 
 # Borders to bounce off - ball is a square of 20 with origin at center left
@@ -135,8 +143,9 @@ while True:
     # Display.
     wn.update()
     if not started:
+        continue
 
-        # Set speeds.
+    # Set speeds.
     if bounces == 0:
         reset_speeds()
         bounces += 1
