@@ -1,4 +1,4 @@
-import operator
+import os
 import turtle
 
 # Window.
@@ -87,9 +87,11 @@ while True:
     if ball.ycor() > window_top:
         ball.sety(window_top)
         ball.dy *= -1
-    if ball.ycor() < window_bottom:
+        os.system("afplay bounce.wav&")
+    elif ball.ycor() < window_bottom:
         ball.sety(window_bottom)
         ball.dy *= -1
+        os.system("afplay bounce.wav&")
     # Border check - continue ball from center after passing window left/right.
     if ball.xcor() < window_left:
         ball.goto(0, 0)
@@ -98,7 +100,7 @@ while True:
         pen.clear()
         pen.write(f"Player A: {score_a} Player B: {score_b}", align="center",
                   font=("Courier", 24, "normal"))
-    if ball.xcor() > window_right:
+    elif ball.xcor() > window_right:
         ball.goto(0, 0)
         ball.dx *= -1
         score_a += 1
@@ -110,7 +112,9 @@ while True:
        -60 < ball.ycor() - paddle_b.ycor() < 60:
         ball.setx(paddle_b.xcor()-20)
         ball.dx *= -1
-    if -10 < ball.xcor() - paddle_a.xcor() < 20 and \
-       -60 < ball.ycor() - paddle_a.ycor() < 60:
+        os.system("afplay bounce.wav&")
+    elif -10 < ball.xcor() - paddle_a.xcor() < 20 and \
+            -60 < ball.ycor() - paddle_a.ycor() < 60:
         ball.setx(paddle_a.xcor()+20)
         ball.dx *= -1
+        os.system("afplay bounce.wav&")
