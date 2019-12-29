@@ -107,8 +107,8 @@ def move_down(paddle: turtle.Turtle):
 
 
 wn.listen()
-wn.onkeypress(lambda: move_up(paddle_a), "w")
-wn.onkeypress(lambda: move_down(paddle_a), "s")
+wn.onkeypress(lambda: move_up(paddle_a), "a")
+wn.onkeypress(lambda: move_down(paddle_a), "z")
 wn.onkeypress(lambda: move_up(paddle_b), "Up")
 wn.onkeypress(lambda: move_down(paddle_b), "Down")
 reset_speeds()
