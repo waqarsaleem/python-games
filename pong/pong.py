@@ -20,6 +20,25 @@ pen.goto(0, 260)
 pen.write(f"Player A: 0 Player B: 0", align="center",
           font=("Courier", 24, "normal"))
 
+
+# Boundary.
+colors = ['white', 'gray', 'white']
+ys = [300, 0, -300]
+for i in range(3):
+    line = turtle.Turtle()
+    line.hideturtle()
+    line.speed(0)
+    line.color(colors[i])
+    line.penup()
+    line.goto(-400, ys[i])
+    line.pendown()
+    line.goto(400, ys[i])
+line.color('gray')
+line.penup()
+line.goto(0, 300)
+line.pendown()
+line.goto(0, -300)
+
 # Paddles and Ball.
 
 
@@ -71,13 +90,13 @@ def accelerate_paddles():
 
 def move_up(paddle: turtle.Turtle):
     y: int = paddle.ycor()
-    y += paddle.dy
+    y = min(y + paddle.dy, 250)
     paddle.sety(y)
 
 
 def move_down(paddle: turtle.Turtle):
     y: int = paddle.ycor()
-    y -= paddle.dy
+    y = max(y - paddle.dy, -250)
     paddle.sety(y)
 
 
@@ -89,10 +108,10 @@ wn.onkeypress(lambda: move_down(paddle_b), "Down")
 reset_speeds()
 
 # Quit.
-wn.onkeypress(wn.bye, "q")
+wn.onkeypress(wn.bye, "0")
 
 
-# Borders to bouncr off - ball is a square of 20 with origin at center left
+# Borders to bounce off - ball is a square of 20 with origin at center left
 ball_height = ball_width = 20
 window_right = wn.window_width() // 2
 window_left = -window_right
@@ -139,7 +158,7 @@ while True:
                   font=("Courier", 24, "normal"))
     elif ball.xcor() > window_right:
         ball.goto(0, 0)
-        ball.dx *= -1
+        ball.dx *= - 1
         bounces = 0
         score_a += 1
         pen.clear()
