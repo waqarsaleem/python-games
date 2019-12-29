@@ -89,12 +89,18 @@ def accelerate_paddles():
 
 
 def move_up(paddle: turtle.Turtle):
+    global started
+    if not started:
+        return
     y: int = paddle.ycor()
     y = min(y + paddle.dy, 250)
     paddle.sety(y)
 
 
 def move_down(paddle: turtle.Turtle):
+    global started
+    if not started:
+        return
     y: int = paddle.ycor()
     y = max(y - paddle.dy, -250)
     paddle.sety(y)
@@ -108,8 +114,8 @@ wn.onkeypress(lambda: move_down(paddle_b), "Down")
 reset_speeds()
 
 # Game states.
-started = False
-start_message = turtle.Turtle()
+started = paused = False
+start_message = pause_message = turtle.Turtle()
 start_message.hideturtle()
 start_message.speed(0)
 start_message.color("white")
@@ -117,6 +123,10 @@ start_message.penup()
 start_message.goto(0, 0)
 start_message.write("Press Enter to Start", align="center",
                     font=("Courier", 48, "bold"))
+pause_message.hideturtle()
+pause_message.speed(0)
+pause_message.color("white")
+pause_message.penup()
 
 
 def game_start():
@@ -126,7 +136,26 @@ def game_start():
     started = True
 
 
+def toggle_pause():
+    global started, paused, pause_message
+    if not started:
+        return
+    if not paused:
+        pause_message.goto(0, 0)
+        pause_message.write("Game Paused", align="center",
+                            font=("Courier", 48, "bold"))
+        pause_message.goto(0, -50)
+        pause_message.write("Press 'P' to Unpause", align="center",
+                            font=("Courier", 48, "bold"))
+        paused = True
+    else:
+        pause_message.clear()
+        paused = False
+
+
 wn.onkeypress(game_start, "Return")
+wn.onkeypress(toggle_pause, "p")
+wn.onkeypress(toggle_pause, "P")
 wn.onkeypress(wn.bye, "0")  # quit.
 
 
@@ -144,7 +173,8 @@ while True:
     wn.update()
     if not started:
         continue
-
+    elif paused:
+        continue
     # Set speeds.
     if bounces == 0:
         reset_speeds()
@@ -173,6 +203,7 @@ while True:
         ball.goto(0, 0)
         ball.dx *= -1
         bounces = 0
+        os.system("afplay fail.mp3")
         score_b += 1
         pen.clear()
         pen.write(f"Player A: {score_a} Player B: {score_b}", align="center",
@@ -181,6 +212,7 @@ while True:
         ball.goto(0, 0)
         ball.dx *= - 1
         bounces = 0
+        os.system("afplay fail.mp3")
         score_a += 1
         pen.clear()
         pen.write(f"Player A: {score_a} Player B: {score_b}", align="center",
