@@ -53,17 +53,7 @@ wn.onkeypress(lambda: move_down(paddle_b), "Down")
 ball.dx: int = 2
 ball.dy: int = 2
 
-# Pause, close game.
-pause = False
-
-
-def toggle_pause():
-    global pause
-    pause = not pause
-    print(f'pause: pause')
-
-
-wn.onkeypress(toggle_pause, "p")
+# Quit.
 wn.onkeypress(wn.bye, "q")
 
 
@@ -77,8 +67,6 @@ window_bottom = -wn.window_height() // 2 + ball_height
 
 # Main game loop.
 while True:
-    if pause:
-        continue
     wn.update()
     # Move the ball.
     ball.setx(ball.xcor() + ball.dx)
@@ -99,8 +87,11 @@ while True:
         ball.goto(0, 0)
         ball.dx *= -1
     # Bounce ball off paddles.
-    if -20 < ball.xcor() - paddle_b.xcor() < -10 and \
+    if -20 < ball.xcor() - paddle_b.xcor() < 10 and \
        -60 < ball.ycor() - paddle_b.ycor() < 60:
-       # ball.ycor()-10 < paddle_b.ycor()+50 and \
-       # ball.ycor()+10 > paddle_b.ycor()-50:
+        ball.setx(paddle_b.xcor()-20)
+        ball.dx *= -1
+    if -10 < ball.xcor() - paddle_a.xcor() < 20 and \
+       -60 < ball.ycor() - paddle_a.ycor() < 60:
+        ball.setx(paddle_a.xcor()+20)
         ball.dx *= -1
