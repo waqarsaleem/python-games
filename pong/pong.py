@@ -8,6 +8,17 @@ wn.bgcolor("black")
 wn.setup(width=800, height=600)
 wn.tracer(0)
 
+# Score and display.
+score_a = score_b = 0
+pen = turtle.Turtle()
+pen.speed(0)
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0, 260)
+pen.write(f"Player A: 0 Player B: 0", align="center",
+          font=("Courier", 24, "normal"))
+
 # Paddles and Ball.
 
 
@@ -57,7 +68,7 @@ ball.dy: int = 2
 wn.onkeypress(wn.bye, "q")
 
 
-# Borders for bouncing off - ball is a square of 20 with origin at top left
+# Borders to bouncr off - ball is a square of 20 with origin at center left
 ball_height = ball_width = 20
 window_right = wn.window_width() // 2
 window_left = -window_right
@@ -83,9 +94,17 @@ while True:
     if ball.xcor() < window_left:
         ball.goto(0, 0)
         ball.dx *= -1
+        score_b += 1
+        pen.clear()
+        pen.write(f"Player A: {score_a} Player B: {score_b}", align="center",
+                  font=("Courier", 24, "normal"))
     if ball.xcor() > window_right:
         ball.goto(0, 0)
         ball.dx *= -1
+        score_a += 1
+        pen.clear()
+        pen.write(f"Player A: {score_a} Player B: {score_b}", align="center",
+                  font=("Courier", 24, "normal"))
     # Bounce ball off paddles.
     if -20 < ball.xcor() - paddle_b.xcor() < 10 and \
        -60 < ball.ycor() - paddle_b.ycor() < 60:
