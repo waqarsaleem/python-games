@@ -21,7 +21,7 @@ pen.write(f"Player A: 0 Player B: 0", align="center",
           font=("Courier", 24, "normal"))
 
 
-# Boundary.
+# Help lines.
 colors = ['white', 'gray', 'white']
 ys = [300, 0, -300]
 for i in range(3):
@@ -107,7 +107,18 @@ wn.onkeypress(lambda: move_up(paddle_b), "Up")
 wn.onkeypress(lambda: move_down(paddle_b), "Down")
 reset_speeds()
 
-# Quit.
+# Game states.
+started = False
+start_message = turtle.Turtle()
+start_message.hideturtle()
+start_message.speed(0)
+start_message.color("white")
+start_message.penup()
+start_message.goto(0, 0)
+start_message.write("Press Enter to Start", align="center",
+                    font=("Courier", 48, "bold"))
+
+
 wn.onkeypress(wn.bye, "0")
 
 
@@ -123,8 +134,9 @@ window_bottom = -wn.window_height() // 2 + ball_height
 while True:
     # Display.
     wn.update()
+    if not started:
 
-    # Set speeds.
+        # Set speeds.
     if bounces == 0:
         reset_speeds()
         bounces += 1
