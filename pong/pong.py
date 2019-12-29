@@ -10,6 +10,7 @@ wn.tracer(0)
 
 # Score and display.
 score_a = score_b = 0
+bounces = 0
 pen = turtle.Turtle()
 pen.speed(0)
 pen.color("white")
@@ -43,6 +44,13 @@ ball.goto(0, 0)
 # Movement
 
 
+def reset_speeds():
+    ball.dx: int = 2
+    ball.dy: int = 2
+    paddle_dx = 20
+    paddle_dy = 20
+
+
 def move_up(paddle: turtle.Turtle):
     y: int = paddle.ycor()
     y += 20
@@ -61,9 +69,6 @@ wn.onkeypress(lambda: move_down(paddle_a), "s")
 wn.onkeypress(lambda: move_up(paddle_b), "Up")
 wn.onkeypress(lambda: move_down(paddle_b), "Down")
 
-ball.dx: int = 2
-ball.dy: int = 2
-
 # Quit.
 wn.onkeypress(wn.bye, "q")
 
@@ -79,6 +84,15 @@ window_bottom = -wn.window_height() // 2 + ball_height
 # Main game loop.
 while True:
     wn.update()
+    if bounces == 0:
+        reset_speeds()
+    elif bounces % 20 == 0:
+        ball.dx += 1
+        ball.dy += 1
+    elif bounces % 30 == 0:
+        paddle_dx += 1
+        paddle_dy += 1
+
     # Move the ball.
     ball.setx(ball.xcor() + ball.dx)
     ball.sety(ball.ycor() + ball.dy)
@@ -97,6 +111,7 @@ while True:
         ball.goto(0, 0)
         ball.dx *= -1
         score_b += 1
+        bounces = 0
         pen.clear()
         pen.write(f"Player A: {score_a} Player B: {score_b}", align="center",
                   font=("Courier", 24, "normal"))
@@ -104,6 +119,7 @@ while True:
         ball.goto(0, 0)
         ball.dx *= -1
         score_a += 1
+        bounces = 0
         pen.clear()
         pen.write(f"Player A: {score_a} Player B: {score_b}", align="center",
                   font=("Courier", 24, "normal"))
@@ -112,9 +128,11 @@ while True:
        -60 < ball.ycor() - paddle_b.ycor() < 60:
         ball.setx(paddle_b.xcor()-20)
         ball.dx *= -1
+        bounces += 1
         os.system("afplay bounce.wav&")
     elif -10 < ball.xcor() - paddle_a.xcor() < 20 and \
             -60 < ball.ycor() - paddle_a.ycor() < 60:
         ball.setx(paddle_a.xcor()+20)
         ball.dx *= -1
+        bounces += 1
         os.system("afplay bounce.wav&")
