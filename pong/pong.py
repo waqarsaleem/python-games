@@ -1,4 +1,5 @@
 import os
+import random
 import turtle
 
 # Window.
@@ -9,7 +10,8 @@ wn.setup(width=800, height=600)
 wn.tracer(0)
 
 # Score and display.
-score_a = score_b = 0
+score_a = 0
+score_b = 0
 bounces = 0
 pen = turtle.Turtle()
 pen.speed(0)
@@ -17,7 +19,7 @@ pen.color("white")
 pen.penup()
 pen.hideturtle()
 pen.goto(0, 260)
-pen.write(f"Player A: 0 Player B: 0", align="center",
+pen.write(f"Player A: {score_a} Player B: {score_b}", align="center",
           font=("Courier", 24, "normal"))
 
 
@@ -64,8 +66,14 @@ ball.goto(0, 0)
 
 
 def reset_speeds():
-    ball.dx: int = 2
-    ball.dy: int = 2
+    if random.randrange(0, 2):
+        ball.dx: int = 2
+    else:
+        ball.dx: int = -2
+    if random.randrange(0, 2):
+        ball.dy: int = 2
+    else:
+        ball.dy: int = -2
     paddle_a.dy = 20
     paddle_b.dy = 20
 
@@ -90,7 +98,7 @@ def accelerate_paddles():
 
 def move_up(paddle: turtle.Turtle):
     global started
-    if not started:
+    if paused or not started:
         return
     y: int = paddle.ycor()
     y = min(y + paddle.dy, 250)
@@ -99,7 +107,7 @@ def move_up(paddle: turtle.Turtle):
 
 def move_down(paddle: turtle.Turtle):
     global started
-    if not started:
+    if paused or not started:
         return
     y: int = paddle.ycor()
     y = max(y - paddle.dy, -250)
@@ -201,7 +209,6 @@ while True:
     # left/right. Reset bounce count and update scores.
     if ball.xcor() < window_left:
         ball.goto(0, 0)
-        ball.dx *= -1
         bounces = 0
         os.system("afplay fail.mp3")
         score_b += 1
@@ -210,7 +217,6 @@ while True:
                   font=("Courier", 24, "normal"))
     elif ball.xcor() > window_right:
         ball.goto(0, 0)
-        ball.dx *= - 1
         bounces = 0
         os.system("afplay fail.mp3")
         score_a += 1
